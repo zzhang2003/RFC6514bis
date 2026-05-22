@@ -18,7 +18,10 @@ Proposed Work Items:
 
 ? Pull in https://datatracker.ietf.org/doc/draft-zzhang-bess-bgp-mvpn-source-active-route (Rishabh?)
 
-? Inter-area segmentation enhancements: remove area restriction/assumption (Jeffrey)
+? Inter-area segmentation (RFC7524)
+  * remove area restriction/assumption (Jeffrey)
+    * https://datatracker.ietf.org/meeting/112/materials/slides-112-bess-draft-zzhang-bess-mvpn-regional-segmentation-01
+  * Restrict the number of Inter-Area P2MP Segmented Next-Hop Extended Community to 1
 
 - One item that Mankamana wanted to add (Mankamana - please clarify)
 
@@ -35,8 +38,13 @@ Proposed Work Items:
   	- RFC9573 has a lot of text about the use case and motivation,
 	  but the core procedure is simple and it may be good to pull that in.
 
-- Add an informational section at the beginning of the document to
-  summarize all relevant MVPN features and RFCs (Rishabh/Mankamana)?
-  - see slide #3 of https://datatracker.ietf.org/meeting/122/materials/slides-122-bess-draft-zzhang-bess-rfc6514bis-00-02
+? Add an informational section at the beginning of the document to
+  summarize all relevant MVPN features and RFCs (Rishabh/Mankamana)
+  * see slide #3 of https://datatracker.ietf.org/meeting/122/materials/slides-122-bess-draft-zzhang-bess-rfc6514bis-00-02
+
+- Discussion Points
+  - Should/could we remove the resolution of PNH in MVPN routes?
+  
+- Misc. items
   
 - Please add more items you think we should work on
