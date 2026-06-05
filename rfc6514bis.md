@@ -584,7 +584,7 @@ author:
 #PE Distinguisher Labels Attribute
 
    This document defines a new BGP attribute, called the "PE
-   Distinguisher Labels" attribute.  This is an optional transitive BGP
+   Distinguisher Labels" (PED) attribute.  This is an optional transitive BGP
    attribute.  The format of this attribute is defined as follows:
 
        +---------------------------------+
@@ -628,7 +628,7 @@ author:
    At a minimum, such facilities MUST include logging an error when such
    an attribute is detected.
 
-   Usage of this attribute is described in {{!RFC6513}}.
+   Usage of this attribute is described in {{!RFC6513}} and in {{interas}}.
 
 #MVPN Auto-Discovery/Binding
 
@@ -855,7 +855,7 @@ author:
    route to add the PE that originated the route as a leaf node to the
    LSP.
 
-##MVPN Auto-Discovery/Binding - Inter-AS Operations
+##MVPN Auto-Discovery/Binding - Inter-AS Operations {#interas}
 
    This section applies only to the case where segmented inter-AS
    tunnels are used.
@@ -935,7 +935,13 @@ author:
    * The route carries a single MCAST-VPN NLRI with the RD set to the
    RD configured for that MVPN on the ASBR, and the Source AS set to
    the ASN of the ASBR.
-   
+
+   * The route carries the PED attribute if any of the following conditions
+     are met:
+      * Some of the aggregated Intra-AS I-PMSI A-D routes carry a PED attribute
+      * Multiple ingress PEs in the AS may inject the same traffic into their
+	    I-PMSI tunnels
+
    * The route carries the PMSI Tunnel attribute if and only if an
    I-PMSI is used for the MVPN.  The Tunnel Type in the attribute is
    set to Ingress Replication; the Leaf Information Required flag is
@@ -972,6 +978,24 @@ author:
    (aggregated) Inter-AS I-PMSI A-D routes could be at the granularity
    of &lt;AS, MVPN&gt;.
 
+   When the PED attribute is included, it advertises labels that this ASBR
+   allocates for the local PEs. The ASBR sets up forwarding state so that
+   before the traffic arriving on an intra-as I-PMSI tunnel is forwarded
+   into the inter-as I-PMSI tunnel:
+
+   * An incoming PED label is swapped to the corresponding PED label
+     allocated by this ASBR
+   * If there is no incoming PED label, one allocated by the ASBR is imposed
+	  to indicate the ingress PE. The ingress PE is identified by the intra-as
+	  I-PMSI tunnel's encapsulation information, e.g., the incoming P2MP tunnel
+	  label, PIM tunnel source address, BIER BFIR-ID, or in the case of Ingress
+	  Replication, the per-PE label that the ASBR advertised in its Intra-AS
+	  I-PMSI A-D route's PTA.
+
+   Note that it is difficult to check in the data plane "if there is no
+   incoming PED label". A future revision will elaborate the corresponding
+   control plane situations.
+   
 ###When Not to Originate Inter-AS I-PMSI A-D Routes
 
    If, for a given MVPN and a given AS, all of the sites connected to
@@ -1521,6 +1545,14 @@ boundary.  Note that the value of trailing bits is irrelevant.
    Upstream Multicast Hop (UMH) route and the selected upstream PE for
    the address carries in the Multicast Source field of MCAST-VPN NLRI.
 
+   The PEs in the same AS MUST use the same procedure to select the upstream
+   PE. However, a PE MAY use different procedures for a C-root in a
+   different AS from the procedures for another C-root in a local
+   AS. For example, for a C-root in a local AS, all the local PEs
+   may use the "Installed UMH Route" method specified in Section 5.1.3
+   of {{!RFC6513}}, while PEs in other ASes may choose the default
+   "default Upstream PE selection" method for the C-root.
+   
    From the selected UMH route, the local PE extracts (a) the ASN of the
    upstream PE (as carried in the Source AS Extended Community of the
    route), and (b) the C-multicast Import RT of the VRF on the upstream
