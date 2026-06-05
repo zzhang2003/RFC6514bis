@@ -16,7 +16,11 @@ Proposed Work Items:
 
 - Rename the label field to accomodae other demulplexers (Jeffrey, -01)
 
-? Pull in https://datatracker.ietf.org/doc/draft-zzhang-bess-bgp-mvpn-source-active-route (Rishabh?)
+Done Pull in https://datatracker.ietf.org/doc/draft-zzhang-bess-bgp-mvpn-source-active-route (Rishabh)
+  * core SA-route enhancement imported into "Supporting PIM-SM without
+    Inter-Site Shared C-Trees" as new subsection "Source Active Route
+    Origination by Any PE"
+  * decision record: .claude/skills/import-ietf-content/decisions/draft-zzhang-bess-bgp-mvpn-source-active-route.md
 
 ? Inter-area segmentation (RFC7524)
   * remove area restriction/assumption (Jeffrey)

@@ -27,6 +27,12 @@ author:
     org: Cisco Systems
     email: mankamis@cisco.com
 
+  -
+    ins: R. Parekh
+    name: Rishabh Parekh
+    org: Arrcus
+    email: rishabh@arrcus.com
+
 --- abstract
 
    RFC 6514 describes the BGP encodings and procedures for
@@ -2299,7 +2305,7 @@ boundary.  Note that the value of trailing bits is irrelevant.
    Whether or not a given MVPN uses inter-site shared C-trees must be
    known a priori (e.g., via provisioning).
 
-##Discovering Active Multicast Sources
+##Discovering Active Multicast Sources {#discovering-active-sources}
 
    A PE can obtain information about active multicast sources within a
    given MVPN in a variety of ways.  One way is for the PE to act as a
@@ -2346,6 +2352,34 @@ PE.
    (the PE learns this by using the same mechanism by which the PE
    learned that the source was active), the PE SHOULD withdraw the
    previously advertised Source Active route.
+
+##Source Active Route Origination by Any PE {#sa-origination-any-pe}
+
+   An implementation MAY support the following enhancement to Source
+   Active A-D route origination in this mode.  A PE supporting this
+   enhancement that discovers a (C-S,C-G) flow on one of its PE-CE
+   interfaces MUST originate a corresponding Source Active A-D route,
+   and MUST withdraw that route when the flow is deemed no longer
+   active.  The Source Active A-D route is constructed as described in
+   {{discovering-active-sources}}, with the Multicast Source and
+   Multicast Group fields set to C-S and C-G of the discovered flow.
+
+   Besides the discovery methods described in
+   {{discovering-active-sources}}, a PE supporting this enhancement MAY
+   use its (C-S,C-G) state to determine that a source is active, if the
+   Reverse Path Forwarding (RPF) interface for (C-S,C-G) is a PE-CE
+   interface.  Such state may have been created by the arrival of
+   traffic on the PE-CE interface or by a received (C-S,C-G) Source Tree
+   Join C-multicast route.  When the (C-S,C-G) state is first created,
+   the PE MAY immediately originate the corresponding Source Active A-D
+   route without waiting for the arrival of traffic.  When the PE stops
+   receiving (C-S,C-G) traffic for longer than the PIM Keepalive_Period
+   {{!RFC7761}}, or when the (C-S,C-G) state is deleted, it MUST withdraw
+   the Source Active A-D route.
+
+   Although the Keepalive_Period value defined in {{!RFC7761}} is used
+   here, this does not require implementing the PIM Keepalive Timer
+   mechanism.
 
 ##Receiver(s) within a Site
 
